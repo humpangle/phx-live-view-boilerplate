@@ -1,0 +1,62 @@
+<div>
+  <h2 class="text-2xl font-medium">
+    <%= @title %>
+  </h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="post-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save"
+  >
+    <%= text_input(f, :username,
+      default: true,
+      class: "cursor-not-allowed mb-1"
+    ) %>
+
+    <%= textarea(f, :body, class: "rounded") %>
+    <%= error_tag(f, :body, class: "mt-1") %>
+
+    <div class="my-3">
+      <%= for err <- upload_errors(@uploads.photos) do %>
+        <p class="notification is-danger max-w-xs ">
+          <%= Phoenix.Naming.humanize(err) %>
+        </p>
+      <% end %>
+       <%= live_file_input(@uploads.photos) %>
+
+      <div class="space-y-1">
+        <%= for entry <- @uploads.photos.entries do %>
+          <div class="grid grid-cols-3 gap-3 first:mt-3">
+            <div class="">
+              <%= live_img_preview(entry, style: "height: 80px") %>
+            </div>
+
+            <div>
+              <progress max="100" value={entry.progress}></progress>
+            </div>
+
+            <div>
+              <button
+                type="button"
+                class="button is-small is-warning"
+                phx-click="cancel-upload"
+                phx-target={@myself}
+                phx-value-ref={entry.ref}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%= submit("Save",
+      phx_disable_with: "Saving...",
+      class: "button mt-1 is-info"
+    ) %>
+  </.form>
+</div>

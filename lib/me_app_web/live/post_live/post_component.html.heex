@@ -1,0 +1,92 @@
+<div id={@id} class={post_class(@post)}>
+  <article class="media">
+    <figure class="media-left">
+      <p class="image is-64x64">
+        <img src={Routes.static_path(@socket, "/images/128x128.png")} />
+      </p>
+    </figure>
+
+    <div class="media-content">
+      <div class="content">
+        <strong>
+          <%= @post.username %>
+        </strong>
+
+        <pre
+          style="max-width:34.6875rem; max-height:15.625rem"
+          class="border-0 bg-white p-0 overflow-auto mt-5"
+        >
+        <%= @post.body %>
+        </pre>
+
+        <%= if length(@post.photo_urls) > 0 do %>
+          <div class="space-x-1 flex mb-4">
+            <%= for {img_url, index}  <- Enum.with_index(@post.photo_urls, 1)  do %>
+              <img
+                id={img_url}
+                src={img_url}
+                alt={"Photo #{index}"}
+                class="h-20"
+              />
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="media-right">
+      <%= link(
+        "Delete",
+        to: "",
+        class:
+          "delete bg-blue-500 hover:bg-blue-300 active:bg-blue-300 focus:bg-blue-300",
+        phx_click: "delete",
+        phx_value_id: @post.id,
+        data: [confirm: "Are you sure?"]
+      ) %>
+    </div>
+  </article>
+
+  <div class="flex justify-between px-6 mt-4 text-blue-500">
+    <a
+      class="hover:text-blue-300 active:text-blue-300"
+      phx-click="inc-likes-count"
+      phx-target={@myself}
+    >
+      <span class="icon is-small mr-1">
+        <i class="fa-regular fa-heart"></i>
+      </span>
+
+      <%= @post.likes_count %>
+    </a>
+
+    <a
+      class="hover:text-blue-300 active:text-blue-300"
+      phx-click="inc-reposts-count"
+      phx-target={@myself}
+    >
+      <span class="icon is-small mr-1">
+        <i class="fas fa-retweet"></i>
+      </span>
+
+      <%= @post.reposts_count %>
+    </a>
+
+    <a
+      href="#"
+      class="hover:text-blue-300 active:text-blue-300"
+      phx-click="show-edit"
+      phx-value-id={@post.id}
+    >
+      <span class="icon is-small">
+        <i class="fa-regular fa-pen-to-square"></i>
+      </span>
+    </a>
+
+    <a href={Routes.post_show_path(@socket, :show, @post)} class="">
+      <span class="icon is-small hover:text-blue-300 active:text-blue-300">
+        <i class="fa-regular fa-eye"></i>
+      </span>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<section class="phx-hero">
+  <h1><%= gettext("Welcome to %{name}!", name: "MyApp") %></h1>
+</section>
+
+<nav>
+  <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+    <%= link to: Routes.live_dashboard_path(@conn, :home),
+      class: "box bg-blue-400 text-white"
+    do %>
+      LiveDashboard
+    <% end %>
+  <% end %>
+
+  <%= link to: Routes.post_index_path(@conn, :index ),
+    id: "",
+    class: "box bg-blue-400 text-white"
+  do %>
+    All Posts
+  <% end %>
+</nav>

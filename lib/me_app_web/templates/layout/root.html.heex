@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag(assigns[:page_title] || "Welcome",
+      suffix: " - MeApp"
+    ) %>
+    <link
+      phx-track-static
+      rel="stylesheet"
+      href={Routes.static_path(@conn, "/assets/css/phoenix.css")}
+    />
+
+    <link
+      phx-track-static
+      rel="stylesheet"
+      href={Routes.static_path(@conn, "/assets/css/fontawesome/css/all.css")}
+    />
+
+    <link
+      phx-track-static
+      rel="stylesheet"
+      href={Routes.static_path(@conn, "/assets/css/bulma.css")}
+    />
+
+    <link
+      phx-track-static
+      rel="stylesheet"
+      href={Routes.static_path(@conn, "/assets/css/app.css")}
+    />
+
+    <script
+      defer
+      phx-track-static
+      type="text/javascript"
+      src={Routes.static_path(@conn, "/assets/js/app.js")}
+    >
+    </script>
+  </head>
+  <body>
+    <nav
+      class="navbar mb-4 shadow-md"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a
+          class="navbar-item"
+          href={if @conn.request_path == "/", do: "", else: "/"}
+        >
+          <img src={Routes.static_path(@conn, "/images/logo.png")} />
+        </a>
+
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarBasicExample"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+            <%= link to: Routes.live_dashboard_path(@conn, :home),
+                class: "navbar-item"
+            do %>
+              Live Dashboard
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-3xl mx-auto">
+      <%= @inner_content %>
+    </div>
+  </body>
+</html>
